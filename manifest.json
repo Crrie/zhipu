@@ -1,0 +1,10 @@
+{
+    "name": "AutoCardUpdaterExtension",
+    "version": "4.1.6",
+    "display_name": "角色卡自动更新（智谱兼容版）",
+    "description": "通过AI自动更新角色卡，并提供编辑器查看和修改角色卡；支持智谱 v4 等 OpenAI 兼容接口。",
+    "author": "1830488003",
+    "settings": "settings.html",
+    "js": "index.js",
+    "css": "style.css"
+}

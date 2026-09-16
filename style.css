@@ -1,0 +1,314 @@
+/* --- 全局与基础样式 (Adapted from quest-system-extension) --- */
+:root {
+    --main-bg-color: #2c2f33;
+    --section-bg-color: #23272a;
+    --text-color: #ffffff;
+    --text-muted-color: #99aab5;
+    --primary-accent-color: #7289da; /* Discord Blurple */
+    --primary-accent-hover-color: #677bc4;
+    --success-color: #43b581; /* Discord Green */
+    --warning-color: #faa61a; /* Discord Yellow */
+    --danger-color: #f04747; /* Discord Red */
+    --border-color: #40444b;
+    --font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    --border-radius: 8px;
+    --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Viewer Popup --- */
+.char-card-viewer-popup {
+    position: fixed !important;
+    top: 10vh !important; /* 增加顶部边距，确保关闭按钮可见 */
+    max-height: 80vh !important; /* 最大高度为视窗的80% */
+    left: 50% !important;
+    transform: translateX(-50%) !important; /* 只进行水平居中 */
+    width: 95vw !important; /* 宽度更宽一些以适应移动端 */
+    max-width: 800px !important;
+    background-color: var(--main-bg-color);
+    color: var(--text-color);
+    font-family: var(--font-family);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    z-index: 2001;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.char-card-viewer-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* 允许在小屏幕上换行 */
+    gap: 10px; /* 为换行元素提供间隙 */
+    padding: 12px 20px;
+    background-color: var(--section-bg-color);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.char-card-viewer-popup-header h3 {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.char-card-viewer-actions {
+    display: flex;
+    flex-wrap: wrap; /* 允许按钮换行 */
+    justify-content: flex-end; /* 确保按钮在换行时靠右 */
+    gap: 10px;
+}
+
+.char-card-viewer-popup-close-button {
+    background: none;
+    border: none;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--text-muted-color);
+    padding: 0 5px;
+    transition: color 0.2s;
+}
+.char-card-viewer-popup-close-button:hover {
+    color: var(--text-color);
+}
+
+.char-card-viewer-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* 按钮之间的间隙 */
+    padding: 10px 15px;
+    background-color: var(--section-bg-color);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    max-height: 180px; /* 限制最大高度，确保下方内容可见 */
+    overflow-y: auto; /* 超出高度时启用垂直滚动 */
+    -ms-overflow-style: none; /* 隐藏滚动条 for IE and Edge */
+    scrollbar-width: none; /* 隐藏滚动条 for Firefox */
+}
+
+/* 隐藏滚动条 for Chrome, Safari and Opera */
+.char-card-viewer-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.char-card-viewer-tab-button-wrapper {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg2); /* 使用主题背景色 */
+    border: 1px solid var(--border-color); /* 使用主题边框色 */
+    border-radius: 16px; /* 圆弧形状 */
+    padding: 0;
+    margin: 0;
+    transition: all 0.2s ease-in-out;
+    overflow: hidden; /* 确保子元素不会超出圆角 */
+}
+
+.char-card-viewer-tab-button {
+    flex-grow: 1;
+    padding: 6px 12px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    color: var(--text-color); /* 使用主题文本色 */
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+    white-space: nowrap;
+}
+
+.char-card-viewer-delete-tab-button {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    border-left: 1px solid var(--border-color); /* 分隔线 */
+    color: var(--text-muted-color); /* 使用主题次要文本色 */
+    cursor: pointer;
+    padding: 6px 10px;
+    font-size: 12px; /* 图标大小 */
+    line-height: 1;
+    transition: all 0.2s ease-in-out;
+}
+
+.char-card-viewer-delete-tab-button:hover {
+    background-color: #f0f0f0;
+    color: var(--danger-color);
+}
+
+/* --- 激活状态 --- */
+.char-card-viewer-tab-button-wrapper.active {
+    background-color: var(--primary-accent-color); /* 紫色背景 */
+    border-color: var(--primary-accent-color);
+}
+
+.char-card-viewer-tab-button-wrapper.active .char-card-viewer-tab-button {
+    color: #ffffff; /* 白色文字 */
+}
+
+.char-card-viewer-tab-button-wrapper.active
+    .char-card-viewer-delete-tab-button {
+    color: #ffffff;
+    border-left-color: var(
+        --primary-accent-hover-color
+    ); /* 深一点的紫色分隔线 */
+}
+
+.char-card-viewer-tab-button-wrapper.active
+    .char-card-viewer-delete-tab-button:hover {
+    background-color: var(--primary-accent-hover-color);
+}
+
+#char-card-viewer-delete-all {
+    background-color: var(--danger-color) !important;
+}
+
+#char-card-viewer-delete-all:hover {
+    background-color: #c0392b !important;
+}
+
+.char-card-viewer-popup-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+.char-card-viewer-popup-body::-webkit-scrollbar {
+    display: none;
+}
+.char-card-viewer-popup-body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.char-card-viewer-content-pane {
+    display: none;
+}
+
+.char-card-viewer-content-pane.active {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.char-card-viewer-card {
+    background-color: var(--section-bg-color);
+    padding: 15px;
+    border-radius: var(--border-radius);
+}
+
+.char-card-viewer-card h4 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    color: var(--primary-accent-color);
+}
+
+.char-card-viewer-sub-card {
+    background-color: var(--main-bg-color);
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    border-left: 3px solid var(--primary-accent-color);
+}
+
+.char-card-viewer-sub-card h5 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1em;
+}
+
+.char-card-editor-field {
+    width: 100%;
+    padding: 8px;
+    margin-top: 4px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background-color: #202225; /* 强制使用插件自定义的深色背景，避免受主题影响 */
+    color: #dcddde; /* 强制使用插件自定义的浅色字体，确保可读性 */
+    box-sizing: border-box;
+}
+
+textarea.char-card-editor-field {
+    resize: vertical;
+    min-height: 60px;
+}
+
+label,
+.small-label {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: bold;
+    color: var(--text-muted-color);
+    font-size: 0.95em;
+}
+
+.small-label {
+    font-weight: normal;
+    font-size: 0.9em;
+}
+
+.char-card-complex-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+.char-card-complex-list-item {
+    border: 1px dashed var(--border-color);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.char-card-viewer-save-button {
+    white-space: nowrap;
+}
+
+.char-card-viewer-actions .menu_button,
+.auto-card-updater-settings .menu_button,
+.auto-card-updater-version-panel .menu_button,
+.button-group .menu_button,
+button.menu_button {
+    white-space: nowrap !important;
+    flex-direction: row !important;
+    text-align: center;
+    justify-content: center;
+}
+
+/* --- Viewer Floating Button (Adapted from quest-system-extension) --- */
+#autoCardUpdater-viewer-button {
+    position: fixed !important;
+    z-index: 2000;
+    cursor: grab;
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(145deg, #2f3338, #212529);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-accent-color);
+    font-size: 24px;
+    box-shadow:
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        inset 0 2px 2px rgba(255, 255, 255, 0.05),
+        0 0 0 1px rgba(0, 0, 0, 0.5);
+    transition:
+        transform 0.2s ease-out,
+        box-shadow 0.2s ease-out,
+        color 0.2s ease-out;
+    user-select: none;
+}
+#autoCardUpdater-viewer-button:hover {
+    transform: scale(1.1);
+    color: var(--primary-accent-hover-color);
+    box-shadow:
+        0 6px 12px rgba(0, 0, 0, 0.4),
+        inset 0 2px 3px rgba(255, 255, 255, 0.08),
+        0 0 10px var(--primary-accent-color); /* Glow effect */
+}
+#autoCardUpdater-viewer-button:active {
+    transform: scale(1.05);
+    cursor: grabbing;
+}
