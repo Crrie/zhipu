@@ -1,19 +1,26 @@
 // SillyTavern Auto Card Updater Extension
 // index.js - Main logic file
 console.log(
-    '[AutoCardUpdater] Running version 4.0.11 with direct API calls as per user feedback.',
+    '[AutoCardUpdater] Running version 4.1.7 with Zhipu and TauriTavern compatibility fixes.',
 );
 
 (function () {
     'use strict';
 
     const extensionName_ACU = 'AutoCardUpdaterExtension';
-    const extensionFolderPath_ACU = `scripts/extensions/third-party/${extensionName_ACU}`;
+    const extensionFolderUrl_ACU = new URL('./', import.meta.url);
+    const extensionPathSegments_ACU = extensionFolderUrl_ACU.pathname
+        .split('/')
+        .filter(Boolean);
+    const installedExtensionName_ACU = decodeURIComponent(
+        extensionPathSegments_ACU[extensionPathSegments_ACU.length - 1] ||
+            extensionName_ACU,
+    );
 
     // --- Updater Module ---
     const Updater_ACU = {
-        gitRepoOwner: '1830488003', // <-- 在这里填写您的 GitHub 用户名
-        gitRepoName: 'AutoCardUpdaterExtension', // <-- 在这里填写您的 GitHub 仓库名
+        gitRepoOwner: 'Crrie',
+        gitRepoName: 'zhipu',
         currentVersion: '0.0.0',
         latestVersion: '0.0.0',
         changelogContent: '',
@@ -64,8 +71,10 @@ console.log(
                     method: 'POST',
                     headers: getRequestHeaders(),
                     body: JSON.stringify({
-                        extensionName: extensionName_ACU,
-                        global: extension_types[extensionName_ACU] === 'global',
+                        extensionName: installedExtensionName_ACU,
+                        global:
+                            extension_types[installedExtensionName_ACU] ===
+                            'global',
                     }),
                 });
                 if (!response.ok) throw new Error(await response.text());
@@ -119,7 +128,10 @@ console.log(
             try {
                 const localManifestText = await (
                     await fetch(
-                        `/${extensionFolderPath_ACU}/manifest.json?t=${Date.now()}`,
+                        new URL(
+                            `manifest.json?t=${Date.now()}`,
+                            extensionFolderUrl_ACU,
+                        ).href,
                     )
                 ).text();
                 this.currentVersion = this.parseVersion(localManifestText);
@@ -1839,7 +1851,7 @@ console.log(
         // 手动加载和注入UI
         try {
             const settingsHtml = await jQuery_API_ACU.get(
-                `${extensionFolderPath_ACU}/settings.html`,
+                new URL('settings.html', extensionFolderUrl_ACU).href,
             );
             jQuery_API_ACU('#extensions_settings2').append(settingsHtml);
         } catch (error) {
